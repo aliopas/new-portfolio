@@ -8,12 +8,12 @@ export default function Home() {
   const featuredProjects = projects.slice(0, 3);
 
   return (
-    <div className="container mx-auto px-4 py-12 md:py-20">
+    <div className="container mx-auto px-4 py-16 md:py-24">
       <section className="text-center">
         <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-4">
           Ali Alaa: Full-Stack Developer
         </h1>
-        <p className="max-w-2xl mx-auto text-lg md:text-xl text-foreground/80 mb-8">
+        <p className="max-w-3xl mx-auto text-lg md:text-xl text-foreground/80 mb-10">
           Crafting modern, responsive, and high-performance web applications.
           Welcome to my digital space.
         </p>
@@ -29,8 +29,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-20 md:mt-32">
-        <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
+      <section className="mt-24 md:mt-32">
+        <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-16">
           Featured Projects
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

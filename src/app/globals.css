@@ -73,31 +73,42 @@ body {
 }
 
 @layer components {
-  @keyframes btn-anim {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
+  /* New rotating border button */
   .btn-gradient {
-    @apply relative inline-flex items-center justify-center p-1 overflow-hidden text-sm font-medium text-foreground rounded-lg;
-    background-image: linear-gradient(to right, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)));
-    background-size: 200% auto;
-    animation: btn-anim 3s linear infinite;
+    @apply relative inline-flex items-center justify-center p-0.5 rounded-lg overflow-hidden;
+    @apply font-medium text-foreground;
   }
 
+  .btn-gradient::before {
+    content: '';
+    @apply absolute w-[200%] h-[200%] -top-1/2 -left-1/2;
+    background-image: conic-gradient(
+      from 180deg at 50% 50%,
+      hsl(var(--primary) / 0.5) 0deg,
+      hsl(var(--accent) / 0.8) 120deg,
+      hsl(var(--primary) / 0.5) 240deg,
+      hsl(var(--primary) / 0.5) 360deg
+    );
+    animation: rotate-border 4s linear infinite;
+    animation-play-state: paused;
+  }
+
+  .btn-gradient:hover::before {
+    animation-play-state: running;
+  }
+
+  @keyframes rotate-border {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
   .btn-gradient > span {
-    @apply relative flex items-center gap-2 px-5 py-2.5 transition-all ease-in duration-150 bg-background dark:bg-card rounded-md w-full h-full;
+    @apply relative flex items-center gap-2 w-full h-full px-5 py-2.5 transition-colors ease-in duration-150 bg-background dark:bg-card rounded-md;
   }
 
   .btn-gradient:hover > span {
-    @apply bg-transparent text-white;
+    @apply bg-background/80 dark:bg-card/80;
   }
 
   .nav-link {
