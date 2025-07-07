@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import ProjectCard from "@/components/public/project-card";
 import { projects } from "@/lib/data";
 import { ArrowRight } from "lucide-react";
+import { GlowingButton } from "@/components/public/glowing-button";
 
 export default function Home() {
   const featuredProjects = projects.slice(0, 3);
@@ -18,14 +19,16 @@ export default function Home() {
           Welcome to my digital space.
         </p>
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-          <Link href="/projects" className="btn-gradient">
-            <span className="flex items-center gap-2">
+          <GlowingButton asChild>
+            <Link href="/projects">
               My Projects <ArrowRight />
-            </span>
-          </Link>
-          <Link href="/contact" className="btn-gradient">
-            <span>Contact Me</span>
-          </Link>
+            </Link>
+          </GlowingButton>
+          <GlowingButton asChild>
+            <Link href="/contact">
+              Contact Me
+            </Link>
+          </GlowingButton>
         </div>
       </section>
 

@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes borderGlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-borderGlow {
+  background-size: 200% 200%;
+  animation: borderGlow 4s linear infinite;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -73,49 +90,6 @@ body {
 }
 
 @layer components {
-  /* New rotating border button */
-  .btn-gradient {
-    @apply relative inline-flex items-center justify-center rounded-lg overflow-hidden;
-    @apply font-medium text-foreground p-0; /* Reset padding, border is created by the inner span's margin */
-  }
-
-  /* This is the pseudo-element that holds and rotates the gradient */
-  .btn-gradient::before {
-    content: '';
-    @apply absolute;
-    /* Make it twice the size of the button to allow for rotation without seeing edges */
-    top: -50%; left: -50%; width: 200%; height: 200%;
-    /* The conic gradient that creates the color circle */
-    background: conic-gradient(
-      from 180deg at 50% 50%,
-      hsl(var(--primary)) 0deg,
-      hsl(var(--accent)) 180deg,
-      hsl(var(--primary)) 360deg
-    );
-    /* The animation */
-    animation: rotate-border 4s linear infinite;
-    animation-play-state: paused; /* Paused by default */
-  }
-
-  .btn-gradient:hover::before {
-    animation-play-state: running; /* Run animation on hover */
-  }
-
-  @keyframes rotate-border {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  
-  /* This is the content that sits on top, masking the gradient to create the border effect */
-  .btn-gradient > span {
-    @apply relative flex items-center justify-center gap-2 w-full h-full px-5 py-2.5;
-    @apply bg-background dark:bg-card;
-    /* Margin creates the border width. The radius is slightly smaller than parent to fit inside. */
-    @apply m-[2px] rounded-md;
-    @apply [&_svg]:size-4;
-  }
-
   .nav-link {
     @apply relative text-sm font-medium text-foreground/80 transition-colors hover:text-foreground;
   }

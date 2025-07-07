@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { PageHeader } from "@/components/admin/page-header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { GlowingButton } from "@/components/public/glowing-button"
 
 const settingsFormSchema = z.object({
   aboutParagraph1: z.string().min(10, "This field is required."),
@@ -103,9 +104,9 @@ export default function SettingsPage() {
                   </FormItem>
                 )}
               />
-              <button type="submit" className="btn-gradient">
-                <span>Save Changes</span>
-              </button>
+              <GlowingButton type="submit">
+                Save Changes
+              </GlowingButton>
             </form>
           </Form>
         </CardContent>

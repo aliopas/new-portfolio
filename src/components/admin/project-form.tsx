@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import type { Project } from "@/lib/types"
+import { GlowingButton } from "@/components/public/glowing-button"
 
 const formSchema = z.object({
   title: z.string().min(2, "Title is too short"),
@@ -135,9 +136,9 @@ export function ProjectForm({ project, onSubmit, onClose }: ProjectFormProps) {
         </div>
         <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
-            <button type="submit" className="btn-gradient">
-                <span>Save Project</span>
-            </button>
+            <GlowingButton type="submit">
+                Save Project
+            </GlowingButton>
         </div>
       </form>
     </Form>

@@ -25,6 +25,7 @@ import type { Project } from "@/lib/types"
 import { ProjectForm } from "./project-form"
 import { useToast } from "@/hooks/use-toast"
 import { PageHeader } from "./page-header"
+import { GlowingButton } from "@/components/public/glowing-button"
 
 export function ProjectsTable() {
   const [projects, setProjects] = useState<Project[]>(initialProjects)
@@ -69,12 +70,10 @@ export function ProjectsTable() {
   return (
     <>
       <PageHeader title="Projects" description="Manage your portfolio projects.">
-        <button className="btn-gradient" onClick={handleAddClick}>
-          <span>
-            <PlusCircle />
-            Add Project
-          </span>
-        </button>
+        <GlowingButton onClick={handleAddClick}>
+          <PlusCircle />
+          Add Project
+        </GlowingButton>
       </PageHeader>
       <div className="border rounded-lg">
         <Table>

@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CodeXml } from "lucide-react";
+import { GlowingButton } from "@/components/public/glowing-button";
 
 export default function LoginPage() {
   return (
@@ -41,9 +42,9 @@ export default function LoginPage() {
               </div>
               <Input id="password" type="password" required defaultValue="password" />
             </div>
-             <button type="submit" className="btn-gradient w-full">
-                <span>Login</span>
-            </button>
+             <GlowingButton type="submit" wrapperClassName="w-full">
+                Login
+            </GlowingButton>
           </form>
            <div className="mt-4 text-center text-sm">
             <Link href="/" className="underline">
