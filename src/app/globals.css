@@ -108,7 +108,7 @@ body {
   }
 
   .btn-gradient:hover > span {
-    @apply bg-background/80 dark:bg-card/80;
+    @apply bg-background/90 dark:bg-card/90;
   }
 
   .nav-link {
