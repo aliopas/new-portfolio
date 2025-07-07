@@ -84,10 +84,9 @@ body {
     @apply absolute w-[200%] h-[200%] -top-1/2 -left-1/2;
     background-image: conic-gradient(
       from 180deg at 50% 50%,
-      hsl(var(--primary) / 0.5) 0deg,
-      hsl(var(--accent) / 0.8) 120deg,
-      hsl(var(--primary) / 0.5) 240deg,
-      hsl(var(--primary) / 0.5) 360deg
+      hsl(var(--primary)) 0deg,
+      hsl(var(--accent)) 180deg,
+      hsl(var(--primary)) 360deg
     );
     animation: rotate-border 4s linear infinite;
     animation-play-state: paused;
@@ -104,7 +103,8 @@ body {
   }
   
   .btn-gradient > span {
-    @apply relative flex items-center gap-2 w-full h-full px-5 py-2.5 transition-colors ease-in duration-150 bg-background dark:bg-card rounded-md;
+    @apply relative flex items-center justify-center gap-2 w-full h-full px-5 py-2.5 transition-colors ease-in duration-150 bg-background dark:bg-card rounded-md;
+    @apply [&_svg]:size-4;
   }
 
   .btn-gradient:hover > span {

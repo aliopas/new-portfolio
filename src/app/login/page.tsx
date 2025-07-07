@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -42,9 +41,9 @@ export default function LoginPage() {
               </div>
               <Input id="password" type="password" required defaultValue="password" />
             </div>
-            <Button type="submit" className="w-full">
-              Login
-            </Button>
+             <button type="submit" className="btn-gradient w-full">
+                <span>Login</span>
+            </button>
           </form>
            <div className="mt-4 text-center text-sm">
             <Link href="/" className="underline">

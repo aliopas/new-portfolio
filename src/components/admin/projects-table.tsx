@@ -69,10 +69,12 @@ export function ProjectsTable() {
   return (
     <>
       <PageHeader title="Projects" description="Manage your portfolio projects.">
-        <Button onClick={handleAddClick}>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Add Project
-        </Button>
+        <button className="btn-gradient" onClick={handleAddClick}>
+          <span>
+            <PlusCircle />
+            Add Project
+          </span>
+        </button>
       </PageHeader>
       <div className="border rounded-lg">
         <Table>

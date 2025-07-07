@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
-import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -104,7 +103,9 @@ export default function SettingsPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Save Changes</Button>
+              <button type="submit" className="btn-gradient">
+                <span>Save Changes</span>
+              </button>
             </form>
           </Form>
         </CardContent>

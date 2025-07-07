@@ -20,12 +20,12 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
           <Link href="/projects" className="btn-gradient">
             <span className="flex items-center gap-2">
-              My Projects <ArrowRight className="h-5 w-5" />
+              My Projects <ArrowRight />
             </span>
           </Link>
-          <Button asChild size="lg" variant="outline">
-            <Link href="/contact">Contact Me</Link>
-          </Button>
+          <Link href="/contact" className="btn-gradient">
+            <span>Contact Me</span>
+          </Link>
         </div>
       </section>
 

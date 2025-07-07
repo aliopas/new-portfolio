@@ -135,7 +135,9 @@ export function ProjectForm({ project, onSubmit, onClose }: ProjectFormProps) {
         </div>
         <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
-            <Button type="submit">Save Project</Button>
+            <button type="submit" className="btn-gradient">
+                <span>Save Project</span>
+            </button>
         </div>
       </form>
     </Form>
