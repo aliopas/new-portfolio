@@ -66,18 +66,19 @@ export default function AdminLayout({
           <SidebarMenu>
             {menuItems.map((item) => (
               <SidebarMenuItem key={item.href}>
-                <Link href={item.href} legacyBehavior passHref>
-                  <SidebarMenuButton
-                    isActive={
-                      item.href === "/dashboard"
-                        ? pathname === item.href
-                        : pathname.startsWith(item.href)
-                    }
-                  >
+                <SidebarMenuButton
+                  asChild
+                  isActive={
+                    item.href === "/dashboard"
+                      ? pathname === item.href
+                      : pathname.startsWith(item.href)
+                  }
+                >
+                  <Link href={item.href}>
                     <item.icon />
                     <span>{item.label}</span>
-                  </SidebarMenuButton>
-                </Link>
+                  </Link>
+                </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
@@ -85,12 +86,12 @@ export default function AdminLayout({
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
-               <Link href="/" legacyBehavior passHref>
-                  <SidebarMenuButton>
+               <SidebarMenuButton asChild>
+                  <Link href="/">
                     <LogOut />
                     <span>Logout</span>
-                  </SidebarMenuButton>
-               </Link>
+                  </Link>
+               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
@@ -125,7 +126,7 @@ export default function AdminLayout({
                         <span>Profile</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                     <Link href="/">
+                     <Link href="/" asChild>
                         <DropdownMenuItem>
                             <LogOut className="mr-2 h-4 w-4" />
                             <span>Log out</span>
