@@ -136,7 +136,7 @@ export default function AdminLayout({
                 </DropdownMenu>
             </div>
         </header>
-        <main className="p-6 md:p-10">{children}</main>
+        <div className="p-6 md:p-10">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   )
