@@ -1,51 +1,51 @@
 import Link from "next/link";
-import { CodeXml, Github, Linkedin, Twitter, ArrowRight } from "lucide-react";
+import { Github, Linkedin, Twitter, CodeXml } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { GlowingButton } from "./glowing-button";
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 text-slate-400 py-12">
-      <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-12">
-        <div className="space-y-6">
-          <Link href="/" className="flex items-center gap-2 font-bold text-lg text-white">
-            <CodeXml className="h-6 w-6 text-primary" />
-            <span className="font-headline">Ali Alaa</span>
-          </Link>
-          <p className="max-w-md">
-            A passionate Full-Stack Developer creating modern and responsive web applications.
-          </p>
-          <div className="flex gap-4">
-            <Link href="#" className="hover:text-primary transition-colors">
-              <Twitter />
-            </Link>
-            <Link href="#" className="hover:text-primary transition-colors">
-              <Github />
-            </Link>
-            <Link href="#" className="hover:text-primary transition-colors">
-              <Linkedin />
-            </Link>
+    <footer className="bg-card text-card-foreground border-t">
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="grid lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-1">
+             <Link href="/" className="flex items-center gap-2 font-bold text-lg mb-4">
+                <CodeXml className="h-6 w-6 text-primary" />
+                <span className="font-headline">Portfolio</span>
+             </Link>
+            <p className="text-foreground/80">
+              Full-Stack Developer crafting modern web solutions.
+            </p>
+            <div className="flex space-x-4 mt-4">
+              <Link href="#" className="text-foreground/80 hover:text-primary"><Github /></Link>
+              <Link href="#" className="text-foreground/80 hover:text-primary"><Linkedin /></Link>
+              <Link href="#" className="text-foreground/80 hover:text-primary"><Twitter /></Link>
+            </div>
+          </div>
+          <div className="lg:col-span-2">
+            <h3 className="font-headline text-xl font-semibold mb-4">Subscribe to My Newsletter</h3>
+            <p className="text-foreground/80 mb-4">
+              Get updates on my latest projects, articles, and tech discoveries.
+            </p>
+            <form className="flex flex-col sm:flex-row gap-4">
+               <div className="relative group w-full">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-primary via-cyan-400 to-accent rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-borderGlow"></div>
+                <Input 
+                  type="email" 
+                  placeholder="Enter your email" 
+                  className="relative w-full z-10 bg-gray-900 text-gray-100 border-transparent"
+                />
+              </div>
+              <GlowingButton type="submit">
+                Subscribe
+              </GlowingButton>
+            </form>
           </div>
         </div>
-
-        <div className="space-y-4">
-          <h3 className="font-headline text-xl font-semibold text-white">Subscribe to my Newsletter</h3>
-          <p>Get updates on my latest projects and articles. No spam, I promise.</p>
-          <form className="flex flex-col sm:flex-row gap-2">
-            <Input 
-              type="email" 
-              placeholder="Enter your email" 
-              className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-400 flex-grow" 
-            />
-            <GlowingButton type="submit" className="px-5 py-2.5" wrapperClassName="w-full sm:w-auto">
-              Subscribe
-            </GlowingButton>
-          </form>
+        <div className="border-t mt-8 pt-6 text-center text-foreground/60">
+          <p>&copy; {new Date().getFullYear()} Ali Alaa. All Rights Reserved.</p>
         </div>
       </div>
-       <div className="container mx-auto px-4 mt-12 text-center text-sm border-t border-slate-800 pt-8">
-          <p>© {new Date().getFullYear()} Ali Alaa. All rights reserved.</p>
-        </div>
     </footer>
   );
 }
