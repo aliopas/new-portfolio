@@ -18,7 +18,7 @@ export default function Home() {
           Welcome to my digital space.
         </p>
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-          <Link href="/projects" className="btn-gradient group">
+          <Link href="/projects" className="btn-gradient">
             <span className="flex items-center gap-2">
               My Projects <ArrowRight className="h-5 w-5" />
             </span>

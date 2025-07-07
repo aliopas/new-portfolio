@@ -1,31 +1,28 @@
-import { Github, Linkedin, Twitter } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '../ui/button';
+import Link from "next/link";
+import { CodeXml, Github, Linkedin, Twitter } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-secondary/50">
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-foreground/80 mb-4 md:mb-0">
+    <footer className="bg-card border-t">
+      <div className="container mx-auto py-8 px-4">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-2">
+            <CodeXml className="h-6 w-6 text-primary" />
+            <span className="font-bold font-headline text-lg">Ali Alaa</span>
+          </div>
+          <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} Ali Alaa. All rights reserved.
           </p>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" asChild>
-              <Link href="#" aria-label="GitHub">
-                <Github className="h-5 w-5" />
-              </Link>
-            </Button>
-            <Button variant="ghost" size="icon" asChild>
-              <Link href="#" aria-label="LinkedIn">
-                <Linkedin className="h-5 w-5" />
-              </Link>
-            </Button>
-            <Button variant="ghost" size="icon" asChild>
-              <Link href="#" aria-label="Twitter">
-                <Twitter className="h-5 w-5" />
-              </Link>
-            </Button>
+          <div className="flex gap-4">
+            <Link href="#" className="text-muted-foreground hover:text-foreground">
+              <Github className="w-5 h-5" />
+            </Link>
+            <Link href="#" className="text-muted-foreground hover:text-foreground">
+              <Twitter className="w-5 h-5" />
+            </Link>
+            <Link href="#" className="text-muted-foreground hover:text-foreground">
+              <Linkedin className="w-5 h-5" />
+            </Link>
           </div>
         </div>
       </div>

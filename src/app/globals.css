@@ -73,20 +73,41 @@ body {
 }
 
 @layer components {
+  @keyframes btn-anim {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
   .btn-gradient {
-    @apply relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg bg-gradient-to-br from-primary to-accent hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800;
+    @apply relative inline-flex items-center justify-center p-1 overflow-hidden text-sm font-medium text-foreground rounded-lg;
+    background-image: linear-gradient(to right, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)));
+    background-size: 200% auto;
+    animation: btn-anim 3s linear infinite;
   }
-  .btn-gradient.group:hover {
-    @apply from-primary to-accent;
-  }
+
   .btn-gradient > span {
-    @apply relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md;
+    @apply relative flex items-center gap-2 px-5 py-2.5 transition-all ease-in duration-150 bg-background dark:bg-card rounded-md w-full h-full;
   }
-  .btn-gradient.group:hover > span {
-    @apply bg-opacity-0;
+
+  .btn-gradient:hover > span {
+    @apply bg-transparent text-white;
   }
 
   .nav-link {
-      @apply relative text-sm font-medium text-foreground/80 transition-colors hover:text-foreground after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[2px] after:bg-primary after:transform after:scale-x-0 after:origin-bottom-left after:transition-transform after:duration-300 hover:after:scale-x-100;
+    @apply relative text-sm font-medium text-foreground/80 transition-colors hover:text-foreground;
+  }
+  .nav-link::after {
+    content: '';
+    @apply absolute left-0 bottom-[-2px] w-full h-[2px] bg-primary transform scale-x-0 origin-bottom-left transition-transform duration-300;
+  }
+  .nav-link:hover::after {
+      @apply scale-x-100;
   }
 }
