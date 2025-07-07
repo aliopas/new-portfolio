@@ -73,29 +73,46 @@ body {
 }
 
 @layer components {
-  /* New flowing border button */
+  /* New rotating border button */
   .btn-gradient {
     @apply relative inline-flex items-center justify-center rounded-lg overflow-hidden;
-    @apply font-medium text-foreground;
-    padding: 2px; /* This padding acts as the border thickness */
-    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)));
-    background-size: 200% auto;
-    animation: flow-border 3s linear infinite;
-    animation-play-state: paused;
+    @apply font-medium text-foreground p-0; /* Reset padding, border is created by the inner span's margin */
   }
 
-  .btn-gradient:hover {
-    animation-play-state: running;
+  /* This is the pseudo-element that holds and rotates the gradient */
+  .btn-gradient::before {
+    content: '';
+    @apply absolute;
+    /* Make it twice the size of the button to allow for rotation without seeing edges */
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    /* The conic gradient that creates the color circle */
+    background: conic-gradient(
+      from 180deg at 50% 50%,
+      hsl(var(--primary)) 0deg,
+      hsl(var(--accent)) 180deg,
+      hsl(var(--primary)) 360deg
+    );
+    /* The animation */
+    animation: rotate-border 4s linear infinite;
+    animation-play-state: paused; /* Paused by default */
   }
 
-  @keyframes flow-border {
+  .btn-gradient:hover::before {
+    animation-play-state: running; /* Run animation on hover */
+  }
+
+  @keyframes rotate-border {
     to {
-      background-position: 200% center;
+      transform: rotate(360deg);
     }
   }
   
+  /* This is the content that sits on top, masking the gradient to create the border effect */
   .btn-gradient > span {
-    @apply relative flex items-center justify-center gap-2 w-full h-full px-5 py-2.5 bg-background dark:bg-card rounded-md;
+    @apply relative flex items-center justify-center gap-2 w-full h-full px-5 py-2.5;
+    @apply bg-background dark:bg-card;
+    /* Margin creates the border width. The radius is slightly smaller than parent to fit inside. */
+    @apply m-[2px] rounded-md;
     @apply [&_svg]:size-4;
   }
 
