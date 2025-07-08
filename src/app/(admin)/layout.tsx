@@ -1,29 +1,19 @@
 "use client"
 
-import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import * as React from "react"
 import {
-  Sidebar,
-  SidebarHeader,
-  SidebarContent,
-  SidebarFooter,
-  SidebarTrigger,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarProvider,
-  SidebarInset,
-} from "@/components/ui/sidebar"
-import {
-  LayoutDashboard,
-  FolderKanban,
-  MessageSquare,
-  Settings,
-  LogOut,
-  User,
   CodeXml,
+  FolderKanban,
+  LayoutDashboard,
+  LogOut,
+  MessageSquare,
+  PanelLeft,
+  Settings,
+  User,
 } from "lucide-react"
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -34,6 +24,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { cn } from "@/lib/utils"
 
@@ -51,93 +42,135 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname()
 
+  const navLinks = (
+    <nav className="grid items-start px-4 text-sm font-medium">
+      {menuItems.map((item) => {
+        const isActive =
+          item.href === "/dashboard"
+            ? pathname === item.href
+            : pathname.startsWith(item.href)
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={cn(
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+              isActive && "bg-muted text-primary"
+            )}
+          >
+            <item.icon className="h-4 w-4" />
+            {item.label}
+          </Link>
+        )
+      })}
+    </nav>
+  )
+
   return (
-    <SidebarProvider>
-      <Sidebar>
-        <SidebarHeader>
-          <div className="flex items-center gap-2">
-             <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-                <CodeXml className="h-6 w-6 text-primary" />
-                <span className="font-headline text-sidebar-foreground">Portfolio</span>
-             </Link>
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarMenu>
-            {menuItems.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton
-                  asChild
-                  isActive={
-                    item.href === "/dashboard"
-                      ? pathname === item.href
-                      : pathname.startsWith(item.href)
-                  }
-                >
-                  <Link href={item.href}>
-                    <item.icon />
-                    <span>{item.label}</span>
+    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+      <aside className="fixed inset-y-0 left-0 z-10 hidden w-60 flex-col border-r bg-background sm:flex">
+        <div className="flex h-[60px] items-center border-b px-6">
+          <Link href="/" className="flex items-center gap-2 font-semibold">
+            <CodeXml className="h-6 w-6 text-primary" />
+            <span className="font-headline">Portfolio</span>
+          </Link>
+        </div>
+        <div className="flex-1 overflow-auto py-2">{navLinks}</div>
+        <div className="mt-auto p-4">
+          <Link
+            href="/"
+            className={cn(
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+            )}
+          >
+            <LogOut className="h-4 w-4" />
+            Logout
+          </Link>
+        </div>
+      </aside>
+
+      <div className="flex flex-col sm:pl-60">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button size="icon" variant="outline" className="sm:hidden">
+                <PanelLeft className="h-5 w-5" />
+                <span className="sr-only">Toggle Menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="sm:max-w-xs">
+              <div className="flex h-full flex-col">
+                <div className="flex h-[60px] items-center border-b px-6">
+                  <Link
+                    href="/"
+                    className="flex items-center gap-2 font-semibold"
+                  >
+                    <CodeXml className="h-6 w-6 text-primary" />
+                    <span className="font-headline">Portfolio</span>
                   </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarContent>
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-               <SidebarMenuButton asChild>
-                  <Link href="/">
-                    <LogOut />
-                    <span>Logout</span>
+                </div>
+                <div className="flex-1 overflow-auto py-2">{navLinks}</div>
+                <div className="mt-auto p-4">
+                  <Link
+                    href="/"
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    )}
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Logout
                   </Link>
-               </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-      </Sidebar>
-      <SidebarInset>
-        <header className="flex items-center justify-between p-4 border-b">
-            <SidebarTrigger className="md:hidden" />
-            <div className="flex-1"></div>
-            <div className="flex items-center gap-4">
-                <ThemeToggle />
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                        <Avatar className="h-8 w-8">
-                        <AvatarImage src="https://placehold.co/40x40.png" alt="@alialaa" data-ai-hint="man portrait"/>
-                        <AvatarFallback>AA</AvatarFallback>
-                        </Avatar>
-                    </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <DropdownMenuLabel className="font-normal">
-                        <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">Ali Alaa</p>
-                        <p className="text-xs leading-none text-muted-foreground">
-                            contact@alialaa.com
-                        </p>
-                        </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                        <User className="mr-2 h-4 w-4" />
-                        <span>Profile</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                     <Link href="/" asChild>
-                        <DropdownMenuItem>
-                            <LogOut className="mr-2 h-4 w-4" />
-                            <span>Log out</span>
-                        </DropdownMenuItem>
-                    </Link>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </div>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          <div className="flex-1" />
+
+          <ThemeToggle />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="relative h-8 w-8 rounded-full"
+              >
+                <Avatar className="h-8 w-8">
+                  <AvatarImage
+                    src="https://placehold.co/40x40.png"
+                    alt="@alialaa"
+                    data-ai-hint="man portrait"
+                  />
+                  <AvatarFallback>AA</AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end" forceMount>
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">Ali Alaa</p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    contact@alialaa.com
+                  </p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <Link href="/" asChild>
+                <DropdownMenuItem>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </Link>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </header>
-        <div className="p-6 md:p-10">{children}</div>
-      </SidebarInset>
-    </SidebarProvider>
+
+        <main className="flex-1 p-6">{children}</main>
+      </div>
+    </div>
   )
 }
