@@ -47,7 +47,9 @@ export default function MessagesPage() {
         title="Messages"
         description="Here are the messages from your contact form."
       />
-      <Card>
+
+      {/* Desktop View */}
+      <Card className="hidden md:block">
         <Table>
           <TableHeader>
             <TableRow>
@@ -107,6 +109,51 @@ export default function MessagesPage() {
           </TableBody>
         </Table>
       </Card>
+      
+      {/* Mobile View */}
+      <div className="md:hidden space-y-4">
+        {messages.map((message) => (
+          <Card key={message.id} className={`p-4 ${!message.read ? "bg-muted/50" : ""}`}>
+            <div className="flex justify-between items-start">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <Badge variant={message.read ? "secondary" : "default"}>
+                    {message.read ? "Read" : "Unread"}
+                  </Badge>
+                  <div className="font-medium">{message.name}</div>
+                </div>
+                 <div className="text-sm text-muted-foreground">{message.email}</div>
+              </div>
+               <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="h-8 w-8 p-0 -mt-1">
+                    <span className="sr-only">Open menu</span>
+                    <MoreHorizontal className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {!message.read && (
+                    <DropdownMenuItem onClick={() => handleMarkAsRead(message.id)}>
+                      <MailOpen className="mr-2 h-4 w-4" />
+                      Mark as read
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(message.id)}>
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <p className="mt-4 text-sm text-foreground/90">{message.message}</p>
+            <div className="text-xs text-muted-foreground mt-2">
+               {formatDistanceToNow(new Date(message.createdAt), {
+                addSuffix: true,
+              })}
+            </div>
+          </Card>
+        ))}
+      </div>
     </>
   )
 }
