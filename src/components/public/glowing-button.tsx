@@ -1,61 +1,41 @@
-import Link from "next/link";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import type { ReactNode } from 'react';
 
-const glowingButtonVariants = cva(
-  "relative group inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg p-px font-medium text-foreground transition-all focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background",
-  {
-    variants: {
-      size: {
-        default: "h-11 px-6",
-        sm: "h-9 px-4",
-        lg: "h-12 px-8",
-      },
-    },
-    defaultVariants: {
-      size: "default",
-    },
-  }
-);
-
-interface GlowingButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof glowingButtonVariants> {
+interface GlowingButtonProps {
+  children: ReactNode;
   href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  onClick?: () => void;
   wrapperClassName?: string;
-  children: React.ReactNode;
 }
 
-const GlowingButton = ({
-  href,
-  size,
-  className,
-  wrapperClassName,
-  children,
-  ...props
-}: GlowingButtonProps) => {
-  const buttonContent = (
+export function GlowingButton({ children, href, type = 'button', onClick, wrapperClassName }: GlowingButtonProps) {
+  const classes = cn(
+    "relative group inline-flex items-center justify-center gap-2 rounded-lg bg-background px-6 py-2.5 text-sm font-semibold text-foreground transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background",
+    wrapperClassName
+  );
+
+  const content = (
     <>
-      <span className="absolute inset-[-1000%] animate-borderGlow bg-[conic-gradient(from_90deg_at_50%_50%,hsl(var(--primary))_0%,hsl(var(--accent))_50%,hsl(var(--primary))_100%)]" />
-      <span className="inline-flex h-full w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-background px-3 py-1 text-sm font-medium text-foreground backdrop-blur-3xl transition-all group-hover:bg-background/80">
+      <span className="absolute -inset-0.5 rounded-lg bg-gradient-to-r from-primary via-accent to-primary opacity-75 blur transition-opacity duration-300 group-hover:opacity-100 animate-borderGlow" />
+      <span className="relative flex items-center gap-2">
         {children}
       </span>
     </>
   );
 
-  const finalClassName = cn(glowingButtonVariants({ size }), className);
-
   if (href) {
     return (
-      <Link href={href} className={cn(finalClassName, wrapperClassName)}>
-        {buttonContent}
+      <Link href={href} className={classes} onClick={onClick}>
+        {content}
       </Link>
     );
   }
 
   return (
-    <button className={cn(finalClassName, wrapperClassName)} {...props}>
-      {buttonContent}
+    <button type={type} onClick={onClick} className={classes}>
+      {content}
     </button>
   );
-};
-
-export { GlowingButton };
+}
