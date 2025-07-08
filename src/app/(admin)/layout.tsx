@@ -95,7 +95,7 @@ export default function AdminLayout({
       </aside>
 
       <div className="flex flex-col sm:pl-60">
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 sm:py-4">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <Sheet>
             <SheetTrigger asChild>
               <Button size="icon" variant="outline" className="sm:hidden">
@@ -175,7 +175,7 @@ export default function AdminLayout({
           </DropdownMenu>
         </header>
 
-        <main className="flex-1 p-6 pt-16">{children}</main>
+        <main className="flex-1 p-6">{children}</main>
       </div>
     </div>
   )
