@@ -95,7 +95,7 @@ export default function AdminLayout({
       </aside>
 
       <div className="flex flex-col sm:pl-60">
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <Sheet>
             <SheetTrigger asChild>
               <Button size="icon" variant="outline" className="sm:hidden">
@@ -104,8 +104,8 @@ export default function AdminLayout({
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="sm:max-w-xs">
+              <SheetTitle className="sr-only">Menu</SheetTitle>
               <div className="flex h-full flex-col">
-                <SheetTitle className="sr-only">Menu</SheetTitle>
                 <div className="flex h-[60px] items-center border-b px-6">
                   <Link
                     href="/"
