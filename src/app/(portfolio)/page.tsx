@@ -2,18 +2,20 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ProjectCard from "@/components/public/project-card";
 import { getProjects } from "@/services/projects";
+import { getSettings } from "@/services/settings";
 import { ArrowRight } from "lucide-react";
 import { GlowingButton } from "@/components/public/glowing-button";
 
 export default async function Home() {
   const allProjects = await getProjects();
   const featuredProjects = allProjects.slice(0, 3);
+  const settings = await getSettings();
 
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">
       <section className="text-center">
         <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4">
-          Ali Alaa: Full-Stack Developer
+          {settings.name}: {settings.jobTitle}
         </h1>
         <p className="max-w-3xl mx-auto text-base md:text-xl text-foreground/80 mb-10">
           Crafting modern, responsive, and high-performance web applications.

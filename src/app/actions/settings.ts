@@ -9,6 +9,8 @@ export async function updateSettingsAction(data: Settings) {
     await settingsService.updateSettings(data);
     revalidatePath('/dashboard/settings');
     revalidatePath('/about');
+    revalidatePath('/');
+    revalidatePath('/contact');
     return { success: true };
   } catch (error) {
     console.error(error);

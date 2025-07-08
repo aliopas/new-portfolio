@@ -12,14 +12,14 @@ export default async function AboutPage() {
         <div className="relative w-48 h-48 lg:w-64 lg:h-64 rounded-full overflow-hidden shadow-lg border-4 border-primary">
           <Image
             src="https://placehold.co/256x256.png"
-            alt="Ali Alaa"
+            alt={settings.name}
             layout="fill"
             objectFit="cover"
             data-ai-hint="professional portrait"
           />
         </div>
-        <h1 className="font-headline text-4xl font-bold mt-6 text-center">Ali Alaa</h1>
-        <p className="text-foreground/80 text-lg text-center">Full-Stack Developer</p>
+        <h1 className="font-headline text-4xl font-bold mt-6 text-center">{settings.name}</h1>
+        <p className="text-foreground/80 text-lg text-center">{settings.jobTitle}</p>
 
         <Card className="max-w-3xl w-full mt-12">
           <CardHeader>

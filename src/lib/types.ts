@@ -20,6 +20,11 @@ export interface Message {
 }
 
 export interface Settings {
+  name: string;
+  jobTitle: string;
+  email: string;
+  phone: string;
+  location: string;
   aboutParagraph1: string;
   aboutParagraph2: string;
   skills: string;

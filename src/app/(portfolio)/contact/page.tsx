@@ -1,7 +1,10 @@
 import ContactForm from "@/components/public/contact-form";
+import { getSettings } from "@/services/settings";
 import { Mail, Phone, MapPin } from "lucide-react";
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getSettings();
+
   return (
     <div className="container mx-auto px-4 py-12 md:py-20">
       <section className="text-center">
@@ -27,8 +30,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg">Email</h4>
-                  <a href="mailto:contact@alialaa.com" className="text-foreground/80 hover:text-primary transition-colors">
-                    contact@alialaa.com
+                  <a href={`mailto:${settings.email}`} className="text-foreground/80 hover:text-primary transition-colors">
+                    {settings.email}
                   </a>
                 </div>
               </div>
@@ -38,7 +41,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg">Phone</h4>
-                  <p className="text-foreground/80">+1 (234) 567-890</p>
+                  <p className="text-foreground/80">{settings.phone}</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
@@ -47,7 +50,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg">Location</h4>
-                  <p className="text-foreground/80">Cairo, Egypt</p>
+                  <p className="text-foreground/80">{settings.location}</p>
                 </div>
               </div>
             </div>

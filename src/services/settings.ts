@@ -5,6 +5,11 @@ import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 const settingsDocRef = doc(db, 'settings', 'main');
 
 const defaultSettings: Settings = {
+  name: "Ali Alaa",
+  jobTitle: "Full-Stack Developer",
+  email: "contact@alialaa.com",
+  phone: "+1 (234) 567-890",
+  location: "Cairo, Egypt",
   aboutParagraph1: "I’m a creative and performance-focused Full Stack Developer who believes great products aren't just built — they’re crafted with vibe. I combine solid technical skills with a strong sense of design and user experience. Whether I'm building dynamic web apps, integrating AI-powered features, or managing complex backends, I follow the Vibe Coding approach — development that feels as good as it functions.",
   aboutParagraph2: "From Node.js, Express, MySQL, and Firebase on the backend, to React, Next.js, Tailwind, and modern UI tools on the frontend, I deliver smart, scalable solutions with clean code and great energy. I also work with Firebase Studio and Cursor to streamline the dev process, build faster, and bring ideas to life with clarity and creativity.",
   skills: "Responsive & smart web apps, AI-enhanced features (chatbots, smart search, recommendations), Full-stack MVPs and dashboards, Clean, animated, and intuitive user interfaces, Fast, scalable, and vibe-driven code",
