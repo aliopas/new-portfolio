@@ -62,7 +62,7 @@ export default function AdminLayout({
              </Link>
           </div>
         </SidebarHeader>
-        <SidebarContent className="justify-center">
+        <SidebarContent>
           <SidebarMenu>
             {menuItems.map((item) => (
               <SidebarMenuItem key={item.href}>
