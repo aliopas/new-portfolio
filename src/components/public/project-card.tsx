@@ -1,65 +1,58 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import { ArrowUpRight, Github } from "lucide-react";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Github, ExternalLink } from "lucide-react";
 import type { Project } from "@/lib/types";
 
 interface ProjectCardProps {
-  project: Project;
+    project: Project;
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
-  return (
-    <Card className="flex flex-col overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-      <div className="relative aspect-video">
-        <Image
-          src={project.image}
-          alt={project.title}
-          fill
-          className="object-cover"
-          data-ai-hint={project.aiHint}
-        />
-      </div>
-      <CardHeader>
-        <CardTitle className="font-headline text-2xl">{project.title}</CardTitle>
-        <div className="flex flex-wrap gap-2 pt-2">
-          {project.tags.map((tag) => (
-            <Badge key={tag} variant="secondary">
-              {tag}
-            </Badge>
-          ))}
-        </div>
-      </CardHeader>
-      <CardContent className="flex-grow">
-        <p className="text-foreground/80">{project.description}</p>
-      </CardContent>
-      <CardFooter className="flex justify-end gap-2">
-        {project.githubUrl && (
-          <Button asChild variant="outline" size="sm">
-            <Link href={project.githubUrl} target="_blank">
-              <Github className="mr-2 h-4 w-4" />
-              Source
-            </Link>
-          </Button>
-        )}
-        {project.liveUrl && (
-          <Button asChild size="sm">
-            <Link href={project.liveUrl} target="_blank">
-              Live Demo
-              <ArrowUpRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-        )}
-      </CardFooter>
-    </Card>
-  );
+    return (
+        <Card className="flex flex-col overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+            <CardHeader className="p-0">
+                <div className="relative aspect-video">
+                    <Image
+                        src={project.image}
+                        alt={project.title}
+                        data-ai-hint={project.aiHint}
+                        fill
+                        className="object-cover"
+                    />
+                </div>
+            </CardHeader>
+            <CardContent className="p-6 flex-grow">
+                <CardTitle className="font-headline text-xl mb-2">{project.title}</CardTitle>
+                <div className="flex flex-wrap gap-2 mb-4">
+                    {project.tags.map((tag) => (
+                        <Badge key={tag} variant="secondary">{tag}</Badge>
+                    ))}
+                </div>
+                <p className="text-muted-foreground text-sm">{project.description}</p>
+            </CardContent>
+            <CardFooter className="p-6 pt-0 flex justify-between items-center">
+                 <div className="flex gap-2">
+                    {project.githubUrl && (
+                        <Button asChild variant="ghost" size="icon">
+                             <Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                                <Github />
+                                <span className="sr-only">GitHub</span>
+                            </Link>
+                        </Button>
+                    )}
+                    {project.liveUrl && (
+                        <Button asChild variant="ghost" size="icon">
+                             <Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                                <ExternalLink />
+                                <span className="sr-only">Live Demo</span>
+                            </Link>
+                        </Button>
+                    )}
+                </div>
+            </CardFooter>
+        </Card>
+    );
 }

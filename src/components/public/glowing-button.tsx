@@ -1,27 +1,42 @@
-import { Slot } from "@radix-ui/react-slot"
-import { cn } from "@/lib/utils"
+import Link from "next/link";
+import { Button, type ButtonProps } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-interface GlowingButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode
-  asChild?: boolean
-  wrapperClassName?: string
+interface GlowingButtonProps extends ButtonProps {
+  href?: string;
+  wrapperClassName?: string;
 }
 
-export function GlowingButton({ children, asChild = false, wrapperClassName, ...props }: GlowingButtonProps) {
-  const Comp = asChild ? Slot : "button"
-  return (
-    <div className={cn("relative group inline-block", wrapperClassName)}>
-      <div
-        className="absolute -inset-0.5 bg-gradient-to-r from-primary via-cyan-400 to-accent
-          rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200
-          animate-borderGlow"
-      ></div>
-      <Comp
-        className={cn("relative px-6 py-3 bg-gray-900 text-gray-100 rounded-lg font-semibold z-10 w-full h-full flex items-center justify-center gap-2", props.className)}
-        {...props}
-      >
-        {children}
-      </Comp>
-    </div>
-  )
+export function GlowingButton({
+  children,
+  href,
+  className,
+  wrapperClassName,
+  ...props
+}: GlowingButtonProps) {
+  const button = (
+    <Button
+      size="lg"
+      className={cn(
+        "relative overflow-hidden group-hover:scale-105 transition-transform",
+        "bg-primary text-primary-foreground hover:bg-primary/90",
+        "shadow-lg shadow-primary/30 hover:shadow-primary/40",
+        className
+      )}
+      {...props}
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_200%] animate-borderGlow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <span className="relative z-10 flex items-center gap-2">{children}</span>
+    </Button>
+  );
+
+  if (href) {
+    return (
+      <Link href={href} className={cn("group", wrapperClassName)}>
+        {button}
+      </Link>
+    );
+  }
+
+  return <div className={cn("group", wrapperClassName)}>{button}</div>;
 }
