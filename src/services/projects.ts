@@ -2,8 +2,6 @@ import { db } from '@/lib/firebase';
 import type { Project } from '@/lib/types';
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy } from 'firebase/firestore';
 
-const projectsCollectionRef = collection(db, 'projects');
-
 // Sample data to seed the database if it's empty
 const sampleProjects: Omit<Project, 'id'>[] = [
   {
@@ -39,13 +37,21 @@ const sampleProjects: Omit<Project, 'id'>[] = [
 ];
 
 async function seedProjects() {
+  if (!db.app) return;
+  const projectsCollectionRef = collection(db, 'projects');
   for (const project of sampleProjects) {
     await addDoc(projectsCollectionRef, project);
   }
 }
 
 export async function getProjects(): Promise<Project[]> {
+  // Gracefully handle the case where Firebase is not configured.
+  if (!db.app) {
+    console.log("Firebase not configured, returning sample projects.");
+    return sampleProjects.map((p, i) => ({ id: `sample-project-${i + 1}`, ...p }));
+  }
   try {
+    const projectsCollectionRef = collection(db, 'projects');
     const q = query(projectsCollectionRef, orderBy('order', 'asc'));
     let querySnapshot = await getDocs(q);
 
@@ -64,21 +70,26 @@ export async function getProjects(): Promise<Project[]> {
     } as Project));
   } catch (error) {
     console.error("Firebase connection error in getProjects. Have you configured src/lib/firebase.ts and enabled the Firestore API in your project?", error);
-    return []; // Return empty array to prevent the page from crashing.
+    // Return sample data on error for a better dev experience
+    return sampleProjects.map((p, i) => ({ id: `sample-project-error-${i + 1}`, ...p }));
   }
 }
 
 export async function addProject(projectData: Omit<Project, 'id'>): Promise<string> {
+  if (!db.app) return "";
+  const projectsCollectionRef = collection(db, 'projects');
   const docRef = await addDoc(projectsCollectionRef, projectData);
   return docRef.id;
 }
 
 export async function updateProject(id: string, projectData: Partial<Project>): Promise<void> {
+  if (!db.app) return;
   const projectDoc = doc(db, 'projects', id);
   await updateDoc(projectDoc, projectData);
 }
 
 export async function deleteProject(id: string): Promise<void> {
+  if (!db.app) return;
   const projectDoc = doc(db, 'projects', id);
   await deleteDoc(projectDoc);
 }

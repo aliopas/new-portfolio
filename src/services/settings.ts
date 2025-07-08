@@ -2,8 +2,6 @@ import { db } from '@/lib/firebase';
 import type { Settings } from '@/lib/types';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
-const settingsDocRef = doc(db, 'settings', 'main');
-
 const defaultSettings: Settings = {
   name: "Ali Alaa",
   jobTitle: "Full-Stack Developer",
@@ -16,7 +14,13 @@ const defaultSettings: Settings = {
 };
 
 export async function getSettings(): Promise<Settings> {
+  // Gracefully handle the case where Firebase is not configured.
+  if (!db.app) {
+    console.log("Firebase not configured, returning default settings.");
+    return defaultSettings;
+  }
   try {
+    const settingsDocRef = doc(db, 'settings', 'main');
     const docSnap = await getDoc(settingsDocRef);
     if (docSnap.exists()) {
       return docSnap.data() as Settings;
@@ -31,5 +35,7 @@ export async function getSettings(): Promise<Settings> {
 }
 
 export async function updateSettings(settingsData: Partial<Settings>): Promise<void> {
+  if (!db.app) return;
+  const settingsDocRef = doc(db, 'settings', 'main');
   await updateDoc(settingsDocRef, settingsData);
 }

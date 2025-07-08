@@ -2,12 +2,15 @@ import { db } from '@/lib/firebase';
 import type { Message } from '@/lib/types';
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, Timestamp } from 'firebase/firestore';
 
-const messagesCollectionRef = collection(db, 'messages');
-
 type MessageInput = Omit<Message, 'id' | 'createdAt' | 'read'>;
 
 export async function getMessages(): Promise<Message[]> {
+  if (!db.app) {
+    console.log("Firebase not configured, returning empty messages array.");
+    return [];
+  }
   try {
+    const messagesCollectionRef = collection(db, 'messages');
     const q = query(messagesCollectionRef, orderBy('createdAt', 'desc'));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => {
@@ -31,6 +34,8 @@ export async function getMessages(): Promise<Message[]> {
 }
 
 export async function addMessage(messageData: MessageInput): Promise<string> {
+  if (!db.app) return "";
+  const messagesCollectionRef = collection(db, 'messages');
   const docRef = await addDoc(messagesCollectionRef, {
     ...messageData,
     read: false,
@@ -40,11 +45,13 @@ export async function addMessage(messageData: MessageInput): Promise<string> {
 }
 
 export async function updateMessage(id: string, messageData: Partial<Omit<Message, 'id'>>): Promise<void> {
+  if (!db.app) return;
   const messageDoc = doc(db, 'messages', id);
   await updateDoc(messageDoc, messageData);
 }
 
 export async function deleteMessage(id: string): Promise<void> {
+  if (!db.app) return;
   const messageDoc = doc(db, 'messages', id);
   await deleteDoc(messageDoc);
 }
