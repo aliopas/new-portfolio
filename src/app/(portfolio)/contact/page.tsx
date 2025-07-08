@@ -5,10 +5,10 @@ export default function ContactPage() {
   return (
     <div className="container mx-auto px-4 py-12 md:py-20">
       <section className="text-center">
-        <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tighter mb-4">
+        <h1 className="font-headline text-3xl md:text-5xl font-bold tracking-tighter mb-4">
           Get in Touch
         </h1>
-        <p className="max-w-2xl mx-auto text-lg text-foreground/80 mb-12">
+        <p className="max-w-2xl mx-auto text-base md:text-lg text-foreground/80 mb-12">
           Have a project in mind or just want to say hi? Feel free to reach out. I'm always open to discussing new ideas and opportunities.
         </p>
       </section>
