@@ -1,7 +1,11 @@
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getSettings } from "@/services/settings";
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const settings = await getSettings();
+  const skillsList = settings.skills.split(',').map(skill => skill.trim());
+
   return (
     <div className="container mx-auto px-4 py-12 md:py-20">
       <div className="flex flex-col items-center">
@@ -23,26 +27,18 @@ export default function AboutPage() {
           </CardHeader>
           <CardContent className="text-base md:text-lg text-foreground/90 space-y-6">
             <p>
-              I’m a creative and performance-focused Full Stack Developer who believes great products aren't just built — they’re crafted with vibe.
+              {settings.aboutParagraph1}
             </p>
             <p>
-              I combine solid technical skills with a strong sense of design and user experience. Whether I'm building dynamic web apps, integrating AI-powered features, or managing complex backends, I follow the Vibe Coding approach — development that feels as good as it functions.
-            </p>
-            <p>
-              From Node.js, Express, MySQL, and Firebase on the backend, to React, Next.js, Tailwind, and modern UI tools on the frontend, I deliver smart, scalable solutions with clean code and great energy.
-            </p>
-            <p>
-              I also work with Firebase Studio and Cursor to streamline the dev process, build faster, and bring ideas to life with clarity and creativity.
+              {settings.aboutParagraph2}
             </p>
 
             <div className="pt-4">
-              <h3 className="font-headline text-2xl font-semibold">🧠 I specialize in:</h3>
+              <h3 className="font-headline text-2xl font-semibold">🧠 My Skills:</h3>
               <ul className="list-disc list-inside space-y-2 mt-4">
-                <li>Responsive & smart web apps</li>
-                <li>AI-enhanced features (chatbots, smart search, recommendations)</li>
-                <li>Full-stack MVPs and dashboards</li>
-                <li>Clean, animated, and intuitive user interfaces</li>
-                <li>Fast, scalable, and vibe-driven code</li>
+                {skillsList.map((skill, index) => (
+                    <li key={index}>{skill}</li>
+                ))}
               </ul>
             </div>
             

@@ -18,3 +18,9 @@ export interface Message {
   createdAt: string; // Changed to string to be serializable from Server to Client Component
   read: boolean;
 }
+
+export interface Settings {
+  aboutParagraph1: string;
+  aboutParagraph2: string;
+  skills: string;
+}

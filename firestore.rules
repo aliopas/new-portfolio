@@ -1,20 +1,25 @@
-
 rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Anyone can read projects (for the public site)
-    // Only authenticated users (admin) can write, update, or delete projects
+
+    // Public read, admin write
     match /projects/{projectId} {
       allow read: if true;
-      allow write, update, delete: if request.auth != null;
+      allow write: if request.auth != null;
     }
 
-    // Anyone can create a message (from the contact form)
-    // Only authenticated users (admin) can read or delete messages
+    // Public create, admin read/delete/update
     match /messages/{messageId} {
       allow create: if true;
-      allow read, delete: if request.auth != null;
+      allow read, delete, update: if request.auth != null;
     }
+    
+    // Public read, admin write
+    match /settings/main {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
   }
 }
