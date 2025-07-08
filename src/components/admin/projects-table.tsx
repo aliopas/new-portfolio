@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useTransition } from "react"
 import Image from "next/image"
 import {
   Table,
@@ -20,17 +20,21 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { MoreHorizontal, GripVertical, Trash2, Edit, PlusCircle } from "lucide-react"
-import { projects as initialProjects } from "@/lib/data"
 import type { Project } from "@/lib/types"
 import { ProjectForm } from "./project-form"
 import { useToast } from "@/hooks/use-toast"
 import { PageHeader } from "./page-header"
 import { GlowingButton } from "@/components/public/glowing-button"
+import { addProjectAction, deleteProjectAction, updateProjectAction } from "@/app/actions/projects"
+import type * as z from "zod"
+import type { formSchema } from "./project-form"
 
-export function ProjectsTable() {
-  const [projects, setProjects] = useState<Project[]>(initialProjects)
+
+export function ProjectsTable({ initialProjects }: { initialProjects: Project[] }) {
+  const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingProject, setEditingProject] = useState<Project | null>(null)
+  const [isPending, startTransition] = useTransition()
   const { toast } = useToast()
 
   const handleAddClick = () => {
@@ -44,27 +48,43 @@ export function ProjectsTable() {
   }
   
   const handleDeleteClick = (projectId: string) => {
-    setProjects(projects.filter(p => p.id !== projectId));
-    toast({ title: "Project Deleted", description: "The project has been successfully deleted." });
+    startTransition(async () => {
+      const result = await deleteProjectAction(projectId);
+      if (result.success) {
+        toast({ title: "Project Deleted", description: "The project has been successfully deleted." });
+      } else {
+        toast({ title: "Error Deleting Project", description: result.error, variant: 'destructive' });
+      }
+    });
   }
 
-  const handleFormSubmit = (values: Omit<Project, 'id' | 'order' | 'aiHint'> & { tags: string[] }) => {
-    if (editingProject) {
-      const updatedProject = { ...editingProject, ...values, aiHint: editingProject.aiHint || 'project image' };
-      setProjects(projects.map(p => (p.id === editingProject.id ? updatedProject : p)))
-      toast({ title: "Project Updated", description: "The project has been successfully updated." });
-    } else {
-      const newProject: Project = {
-        id: (projects.length + 1).toString(),
-        order: projects.length + 1,
-        aiHint: 'project image',
-        ...values,
+  const handleFormSubmit = (values: z.infer<typeof formSchema>) => {
+    startTransition(async () => {
+      const tags = values.tags.split(",").map(tag => tag.trim()).filter(Boolean);
+      const projectData = { ...values, tags };
+
+      let result;
+      if (editingProject) {
+        const updatedValues = { ...projectData, aiHint: editingProject.aiHint || 'project image', order: editingProject.order };
+        result = await updateProjectAction(editingProject.id, updatedValues);
+        if (result.success) {
+          toast({ title: "Project Updated", description: "The project has been successfully updated." });
+        }
+      } else {
+        const newProjectData = { ...projectData, aiHint: 'project image', order: initialProjects.length + 1 };
+        result = await addProjectAction(newProjectData);
+         if (result.success) {
+          toast({ title: "Project Added", description: "A new project has been successfully added." });
+        }
       }
-      setProjects([...projects, newProject]);
-      toast({ title: "Project Added", description: "A new project has been successfully added." });
-    }
-    setIsDialogOpen(false)
-    setEditingProject(null)
+
+      if (!result.success) {
+        toast({ title: `Error ${editingProject ? 'Updating' : 'Adding'} Project`, description: result.error, variant: 'destructive' });
+      }
+
+      setIsDialogOpen(false)
+      setEditingProject(null)
+    });
   }
 
   return (
@@ -87,7 +107,7 @@ export function ProjectsTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {projects.sort((a,b) => a.order - b.order).map(project => (
+            {initialProjects.sort((a,b) => a.order - b.order).map(project => (
               <TableRow key={project.id}>
                 <TableCell className="cursor-grab text-center">
                   <GripVertical className="h-5 w-5 text-muted-foreground" />
@@ -144,6 +164,7 @@ export function ProjectsTable() {
             project={editingProject}
             onSubmit={handleFormSubmit}
             onClose={() => setIsDialogOpen(false)}
+            isPending={isPending}
           />
         </DialogContent>
       </Dialog>

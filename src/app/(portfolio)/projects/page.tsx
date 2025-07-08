@@ -1,7 +1,9 @@
 import ProjectCard from "@/components/public/project-card";
-import { projects } from "@/lib/data";
+import { getProjects } from "@/services/projects";
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const projects = await getProjects();
+
   return (
     <div className="container mx-auto px-4 py-12 md:py-20">
       <section className="text-center">

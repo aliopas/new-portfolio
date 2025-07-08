@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ProjectCard from "@/components/public/project-card";
-import { projects } from "@/lib/data";
+import { getProjects } from "@/services/projects";
 import { ArrowRight } from "lucide-react";
 import { GlowingButton } from "@/components/public/glowing-button";
 
-export default function Home() {
-  const featuredProjects = projects.slice(0, 3);
+export default async function Home() {
+  const allProjects = await getProjects();
+  const featuredProjects = allProjects.slice(0, 3);
 
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">

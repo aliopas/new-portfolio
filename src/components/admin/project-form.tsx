@@ -18,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea"
 import type { Project } from "@/lib/types"
 import { GlowingButton } from "@/components/public/glowing-button"
 
-const formSchema = z.object({
+export const formSchema = z.object({
   title: z.string().min(2, "Title is too short"),
   description: z.string().min(10, "Description is too short"),
   tags: z.string(),
@@ -29,11 +29,12 @@ const formSchema = z.object({
 
 interface ProjectFormProps {
   project?: Project | null;
-  onSubmit: (values: Omit<Project, 'id' | 'order' | 'aiHint'> & { tags: string[] }) => void;
+  onSubmit: (values: z.infer<typeof formSchema>) => void;
   onClose: () => void;
+  isPending: boolean;
 }
 
-export function ProjectForm({ project, onSubmit, onClose }: ProjectFormProps) {
+export function ProjectForm({ project, onSubmit, onClose, isPending }: ProjectFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,14 +47,9 @@ export function ProjectForm({ project, onSubmit, onClose }: ProjectFormProps) {
     },
   })
 
-  function handleFormSubmit(values: z.infer<typeof formSchema>) {
-    const tags = values.tags.split(",").map(tag => tag.trim()).filter(Boolean);
-    onSubmit({ ...values, tags });
-  }
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="title"
@@ -135,9 +131,9 @@ export function ProjectForm({ project, onSubmit, onClose }: ProjectFormProps) {
             />
         </div>
         <div className="flex justify-end gap-2 pt-4">
-            <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
-            <GlowingButton type="submit">
-                Save Project
+            <Button type="button" variant="outline" onClick={onClose} disabled={isPending}>Cancel</Button>
+            <GlowingButton type="submit" disabled={isPending}>
+                {isPending ? "Saving..." : "Save Project"}
             </GlowingButton>
         </div>
       </form>

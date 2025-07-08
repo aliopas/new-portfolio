@@ -15,6 +15,6 @@ export interface Message {
   name: string;
   email: string;
   message: string;
-  createdAt: Date;
+  createdAt: string; // Changed to string to be serializable from Server to Client Component
   read: boolean;
 }
