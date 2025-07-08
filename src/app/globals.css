@@ -6,8 +6,8 @@
   padding: 0.6em 2em;
   border: none;
   outline: none;
-  color: rgb(255, 255, 255);
-  background: #111;
+  color: var(--glowing-button-text);
+  background: var(--glowing-button-bg);
   cursor: pointer;
   position: relative;
   z-index: 0;
@@ -63,7 +63,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background: #222;
+  background: var(--glowing-button-bg-after);
   left: 0;
   top: 0;
   border-radius: 10px;
@@ -101,6 +101,11 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    /* Glowing Button Vars - Light Mode */
+    --glowing-button-bg: hsl(var(--card));
+    --glowing-button-bg-after: hsl(var(--background));
+    --glowing-button-text: hsl(var(--card-foreground));
   }
  
   .dark {
@@ -128,6 +133,11 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    /* Glowing Button Vars - Dark Mode */
+    --glowing-button-bg: #111;
+    --glowing-button-bg-after: #222;
+    --glowing-button-text: rgb(255, 255, 255);
   }
 }
 
