@@ -13,7 +13,7 @@ export default function ProjectsPage() {
         </p>
       </section>
 
-      <div className="max-w-5xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
         {projects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}

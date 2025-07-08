@@ -4,6 +4,7 @@ import ProjectCard from "@/components/public/project-card";
 import { projects } from "@/lib/data";
 import { ArrowRight } from "lucide-react";
 import { GlowingButton } from "@/components/public/glowing-button";
+import NewsletterSubscription from "@/components/public/newsletter-subscription";
 
 export default function Home() {
   const featuredProjects = projects.slice(0, 3);
@@ -19,15 +20,11 @@ export default function Home() {
           Welcome to my digital space.
         </p>
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-          <GlowingButton asChild>
-            <Link href="/projects">
+          <GlowingButton href="/projects">
               My Projects <ArrowRight />
-            </Link>
           </GlowingButton>
-          <GlowingButton asChild>
-            <Link href="/contact">
+           <GlowingButton href="/contact">
               Contact Me
-            </Link>
           </GlowingButton>
         </div>
       </section>
@@ -36,7 +33,7 @@ export default function Home() {
         <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-16">
           Featured Projects
         </h2>
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
           {featuredProjects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
