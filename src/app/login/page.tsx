@@ -13,7 +13,7 @@ import { GlowingButton } from "@/components/public/glowing-button";
 
 export default function LoginPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-secondary">
+    <div className="flex items-center justify-center min-h-screen bg-secondary p-4">
       <Card className="mx-auto max-w-sm w-full">
         <CardHeader className="text-center">
            <Link href="/" className="flex justify-center items-center mb-4">

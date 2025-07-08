@@ -1,45 +1,61 @@
-import Link from 'next/link';
-import type { ReactNode } from 'react';
-import { cn } from '@/lib/utils';
+import Link from "next/link";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
-interface GlowingButtonProps {
-  children: ReactNode;
+const glowingButtonVariants = cva(
+  "relative group inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg p-px font-medium text-foreground transition-all focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background",
+  {
+    variants: {
+      size: {
+        default: "h-11 px-6",
+        sm: "h-9 px-4",
+        lg: "h-12 px-8",
+      },
+    },
+    defaultVariants: {
+      size: "default",
+    },
+  }
+);
+
+interface GlowingButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof glowingButtonVariants> {
   href?: string;
-  type?: 'button' | 'submit' | 'reset';
-  onClick?: () => void;
   wrapperClassName?: string;
+  children: React.ReactNode;
 }
 
-export function GlowingButton({
-  children,
+const GlowingButton = ({
   href,
-  type = 'button',
-  onClick,
+  size,
+  className,
   wrapperClassName,
-}: GlowingButtonProps) {
-  const commonClasses =
-    'relative z-10 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 px-8 bg-primary text-primary-foreground hover:bg-primary/90';
-
-  const glowClasses =
-    "before:absolute before:inset-0 before:-z-10 before:rounded-[--radius] before:bg-primary/50 before:opacity-50 before:blur-lg before:transition-all before:duration-300 hover:before:opacity-75 hover:before:scale-105";
-
+  children,
+  ...props
+}: GlowingButtonProps) => {
   const buttonContent = (
-    <div className={cn('relative', wrapperClassName)}>
-      {href ? (
-        <Link href={href} className={cn(commonClasses, glowClasses)}>
-          {children}
-        </Link>
-      ) : (
-        <button
-          type={type}
-          onClick={onClick}
-          className={cn(commonClasses, glowClasses)}
-        >
-          {children}
-        </button>
-      )}
-    </div>
+    <>
+      <span className="absolute inset-[-1000%] animate-borderGlow bg-[conic-gradient(from_90deg_at_50%_50%,hsl(var(--primary))_0%,hsl(var(--accent))_50%,hsl(var(--primary))_100%)]" />
+      <span className="inline-flex h-full w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-background px-3 py-1 text-sm font-medium text-foreground backdrop-blur-3xl transition-all group-hover:bg-background/80">
+        {children}
+      </span>
+    </>
   );
 
-  return buttonContent;
-}
+  const finalClassName = cn(glowingButtonVariants({ size }), className);
+
+  if (href) {
+    return (
+      <Link href={href} className={cn(finalClassName, wrapperClassName)}>
+        {buttonContent}
+      </Link>
+    );
+  }
+
+  return (
+    <button className={cn(finalClassName, wrapperClassName)} {...props}>
+      {buttonContent}
+    </button>
+  );
+};
+
+export { GlowingButton };
