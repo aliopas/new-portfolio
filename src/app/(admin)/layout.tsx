@@ -24,7 +24,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { cn } from "@/lib/utils"
 
@@ -100,6 +105,7 @@ export default function AdminLayout({
             </SheetTrigger>
             <SheetContent side="left" className="sm:max-w-xs">
               <div className="flex h-full flex-col">
+                <SheetTitle className="sr-only">Menu</SheetTitle>
                 <div className="flex h-[60px] items-center border-b px-6">
                   <Link
                     href="/"
