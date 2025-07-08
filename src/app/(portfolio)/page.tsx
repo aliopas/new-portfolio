@@ -4,7 +4,6 @@ import ProjectCard from "@/components/public/project-card";
 import { projects } from "@/lib/data";
 import { ArrowRight } from "lucide-react";
 import { GlowingButton } from "@/components/public/glowing-button";
-import NewsletterSubscription from "@/components/public/newsletter-subscription";
 
 export default function Home() {
   const featuredProjects = projects.slice(0, 3);

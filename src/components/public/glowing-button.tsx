@@ -1,42 +1,45 @@
-import Link from "next/link";
-import { Button, type ButtonProps } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import Link from 'next/link';
+import type { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 
-interface GlowingButtonProps extends ButtonProps {
+interface GlowingButtonProps {
+  children: ReactNode;
   href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  onClick?: () => void;
   wrapperClassName?: string;
 }
 
 export function GlowingButton({
   children,
   href,
-  className,
+  type = 'button',
+  onClick,
   wrapperClassName,
-  ...props
 }: GlowingButtonProps) {
-  const button = (
-    <Button
-      size="lg"
-      className={cn(
-        "relative overflow-hidden group-hover:scale-105 transition-transform",
-        "bg-primary text-primary-foreground hover:bg-primary/90",
-        "shadow-lg shadow-primary/30 hover:shadow-primary/40",
-        className
+  const commonClasses =
+    'relative z-10 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 px-8 bg-primary text-primary-foreground hover:bg-primary/90';
+
+  const glowClasses =
+    "before:absolute before:inset-0 before:-z-10 before:rounded-[--radius] before:bg-primary/50 before:opacity-50 before:blur-lg before:transition-all before:duration-300 hover:before:opacity-75 hover:before:scale-105";
+
+  const buttonContent = (
+    <div className={cn('relative', wrapperClassName)}>
+      {href ? (
+        <Link href={href} className={cn(commonClasses, glowClasses)}>
+          {children}
+        </Link>
+      ) : (
+        <button
+          type={type}
+          onClick={onClick}
+          className={cn(commonClasses, glowClasses)}
+        >
+          {children}
+        </button>
       )}
-      {...props}
-    >
-      <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_200%] animate-borderGlow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <span className="relative z-10 flex items-center gap-2">{children}</span>
-    </Button>
+    </div>
   );
 
-  if (href) {
-    return (
-      <Link href={href} className={cn("group", wrapperClassName)}>
-        {button}
-      </Link>
-    );
-  }
-
-  return <div className={cn("group", wrapperClassName)}>{button}</div>;
+  return buttonContent;
 }
