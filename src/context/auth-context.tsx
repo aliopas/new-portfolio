@@ -7,8 +7,6 @@ import type { ReactNode } from 'react';
 import { createContext, useEffect, useState } from 'react';
 import { app } from '@/lib/firebase';
 
-const auth = getAuth(app);
-
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -27,6 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
+    const auth = getAuth(app);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
@@ -36,6 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
   
   const signOut = async () => {
+    const auth = getAuth(app);
     await firebaseSignOut(auth);
     router.push('/login');
   };
