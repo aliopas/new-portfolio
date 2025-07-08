@@ -25,6 +25,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
+    // Only initialize auth if Firebase is configured
+    if (!app.name) {
+      setLoading(false);
+      return;
+    }
     const auth = getAuth(app);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
@@ -35,8 +40,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
   
   const signOut = async () => {
-    const auth = getAuth(app);
-    await firebaseSignOut(auth);
+    // Only attempt to sign out if Firebase is configured
+    if (app.name) {
+      const auth = getAuth(app);
+      await firebaseSignOut(auth);
+    }
     router.push('/login');
   };
 

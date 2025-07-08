@@ -37,8 +37,7 @@ export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [isPending, setIsPending] = useState(false);
-  const auth = getAuth(app);
-
+  
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -49,7 +48,19 @@ export default function LoginPage() {
 
   async function onSubmit(values: z.infer<typeof loginFormSchema>) {
     setIsPending(true);
+
+    if (!app.name) {
+      toast({
+        title: "Configuration Error",
+        description: "Firebase is not configured. Please add your credentials to .env.local",
+        variant: "destructive",
+      });
+      setIsPending(false);
+      return;
+    }
+
     try {
+      const auth = getAuth(app);
       await signInWithEmailAndPassword(auth, values.email, values.password);
       router.push("/dashboard");
     } catch (error) {
