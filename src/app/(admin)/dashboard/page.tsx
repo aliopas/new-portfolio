@@ -17,10 +17,14 @@ import { Badge } from "@/components/ui/badge"
 import { StatCard } from "@/components/admin/stat-card"
 import { PageHeader } from "@/components/admin/page-header"
 import { FolderKanban, MessageSquare, Users } from "lucide-react"
-import { projects, messages } from "@/lib/data"
+import { getProjects } from "@/services/projects"
+import { getMessages } from "@/services/messages"
 import { VisitorChart } from "@/components/admin/visitor-chart"
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const projects = await getProjects();
+  const messages = await getMessages();
+  
   const unreadMessages = messages.filter(m => !m.read).length;
   const recentMessages = messages.slice(0, 5);
 
