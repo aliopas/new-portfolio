@@ -1,4 +1,12 @@
+"use client"
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import {
   Card,
   CardContent,
@@ -6,12 +14,55 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { CodeXml } from "lucide-react";
 import { GlowingButton } from "@/components/public/glowing-button";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+
+const loginFormSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email." }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+});
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { toast } = useToast();
+  const [isPending, setIsPending] = useState(false);
+
+  const form = useForm<z.infer<typeof loginFormSchema>>({
+    resolver: zodResolver(loginFormSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof loginFormSchema>) {
+    setIsPending(true);
+    try {
+      await signInWithEmailAndPassword(auth, values.email, values.password);
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast({
+        title: "Login Failed",
+        description: "Invalid email or password. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsPending(false);
+    }
+  }
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-secondary p-4">
       <Card className="mx-auto max-w-sm w-full">
@@ -25,27 +76,47 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action="/dashboard" className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="admin@example.com"
-                required
-                defaultValue="admin@example.com"
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="admin@example.com"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            </div>
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-              </div>
-              <Input id="password" type="password" required defaultValue="password" />
-            </div>
-             <GlowingButton type="submit" wrapperClassName="w-full">
-                Login
-            </GlowingButton>
-          </form>
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="••••••••"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <GlowingButton type="submit" disabled={isPending} wrapperClassName="w-full">
+                {isPending ? "Logging in..." : "Login"}
+              </GlowingButton>
+            </form>
+          </Form>
            <div className="mt-4 text-center text-sm">
             <Link href="/" className="underline">
                 Back to portfolio

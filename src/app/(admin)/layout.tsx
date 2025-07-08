@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import * as React from "react"
 import {
   CodeXml,
@@ -12,6 +12,7 @@ import {
   PanelLeft,
   Settings,
   User,
+  Loader2,
 } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -32,6 +33,7 @@ import {
 } from "@/components/ui/sheet"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { cn } from "@/lib/utils"
+import { useAuth } from "@/hooks/use-auth"
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -45,7 +47,32 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode
 }) {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const router = useRouter();
+  const { user, loading, signOut } = useAuth();
+
+  React.useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
+  
+  const handleLogout = async () => {
+    await signOut();
+  };
+
 
   const navLinks = (
     <nav className="grid items-start px-4 text-sm font-medium">
@@ -82,20 +109,21 @@ export default function AdminLayout({
         </div>
         <div className="flex-1 overflow-auto py-2">{navLinks}</div>
         <div className="mt-auto p-4">
-          <Link
-            href="/"
+          <Button
+            variant="ghost"
+            onClick={handleLogout}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              "flex w-full justify-start items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
             )}
           >
             <LogOut className="h-4 w-4" />
             Logout
-          </Link>
+          </Button>
         </div>
       </aside>
 
       <div className="flex flex-col sm:pl-60">
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 sm:py-4">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 sm:py-6">
           <Sheet>
             <SheetTrigger asChild>
               <Button size="icon" variant="outline" className="sm:hidden">
@@ -117,15 +145,16 @@ export default function AdminLayout({
                 </div>
                 <div className="flex-1 overflow-auto py-2">{navLinks}</div>
                 <div className="mt-auto p-4">
-                  <Link
-                    href="/"
+                   <Button
+                    variant="ghost"
+                    onClick={handleLogout}
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                      "flex w-full justify-start items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                     )}
                   >
                     <LogOut className="h-4 w-4" />
                     Logout
-                  </Link>
+                  </Button>
                 </div>
               </div>
             </SheetContent>
@@ -142,34 +171,32 @@ export default function AdminLayout({
               >
                 <Avatar className="h-8 w-8">
                   <AvatarImage
-                    src="https://placehold.co/40x40.png"
-                    alt="@alialaa"
+                    src={user.photoURL ?? "https://placehold.co/40x40.png"}
+                    alt={user.displayName ?? user.email ?? ""}
                     data-ai-hint="man portrait"
                   />
-                  <AvatarFallback>AA</AvatarFallback>
+                  <AvatarFallback>{user.email?.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">Ali Alaa</p>
+                  <p className="text-sm font-medium leading-none">{user.displayName ?? "Admin"}</p>
                   <p className="text-xs leading-none text-muted-foreground">
-                    contact@alialaa.com
+                    {user.email}
                   </p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem disabled>
                 <User className="mr-2 h-4 w-4" />
                 <span>Profile</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </Link>
+              <DropdownMenuItem onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
