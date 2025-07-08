@@ -54,7 +54,7 @@ export default function MessagesPage() {
               <TableHead className="w-[100px]">Status</TableHead>
               <TableHead>Contact</TableHead>
               <TableHead>Message</TableHead>
-              <TableHead>Received</TableHead>
+              <TableHead className="hidden md:table-cell">Received</TableHead>
               <TableHead className="w-[50px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -68,14 +68,14 @@ export default function MessagesPage() {
                 </TableCell>
                 <TableCell>
                   <div className="font-medium">{message.name}</div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="hidden text-sm text-muted-foreground sm:block">
                     {message.email}
                   </div>
                 </TableCell>
                 <TableCell>
                   <p className="max-w-xs truncate">{message.message}</p>
                 </TableCell>
-                <TableCell>
+                <TableCell className="hidden md:table-cell">
                   {formatDistanceToNow(new Date(message.createdAt), {
                     addSuffix: true,
                   })}
