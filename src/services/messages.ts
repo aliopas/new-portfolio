@@ -7,20 +7,27 @@ const messagesCollectionRef = collection(db, 'messages');
 type MessageInput = Omit<Message, 'id' | 'createdAt' | 'read'>;
 
 export async function getMessages(): Promise<Message[]> {
-  const q = query(messagesCollectionRef, orderBy('createdAt', 'desc'));
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map(doc => {
-    const data = doc.data();
-    return {
-      id: doc.id,
-      name: data.name,
-      email: data.email,
-      message: data.message,
-      // Firestore timestamps need to be converted to a serializable format
-      createdAt: (data.createdAt as Timestamp).toDate().toISOString(),
-      read: data.read,
-    } as Message;
-  });
+  try {
+    const q = query(messagesCollectionRef, orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      const createdAt = data.createdAt as Timestamp;
+      return {
+        id: doc.id,
+        name: data.name,
+        email: data.email,
+        message: data.message,
+        // Firestore timestamps need to be converted to a serializable format
+        // Also check if createdAt exists to prevent crash on bad data
+        createdAt: createdAt ? createdAt.toDate().toISOString() : new Date().toISOString(),
+        read: data.read,
+      } as Message;
+    });
+  } catch (error) {
+    console.error("Firebase connection error in getMessages. Have you configured src/lib/firebase.ts and enabled the Firestore API in your project?", error);
+    return []; // Return empty array to prevent the page from crashing.
+  }
 }
 
 export async function addMessage(messageData: MessageInput): Promise<string> {

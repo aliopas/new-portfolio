@@ -5,12 +5,17 @@ import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy 
 const projectsCollectionRef = collection(db, 'projects');
 
 export async function getProjects(): Promise<Project[]> {
-  const q = query(projectsCollectionRef, orderBy('order', 'asc'));
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data(),
-  } as Project));
+  try {
+    const q = query(projectsCollectionRef, orderBy('order', 'asc'));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    } as Project));
+  } catch (error) {
+    console.error("Firebase connection error in getProjects. Have you configured src/lib/firebase.ts and enabled the Firestore API in your project?", error);
+    return []; // Return empty array to prevent the page from crashing.
+  }
 }
 
 export async function addProject(projectData: Omit<Project, 'id'>): Promise<string> {
