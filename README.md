@@ -1,6 +1,6 @@
-# Firebase Studio Portfolio
+# Firebase Studio Portfolio (Ready for Vercel)
 
-This is a Next.js portfolio starter project built in Firebase Studio. It's fully configured to work with Firebase for authentication, database, and hosting.
+This is a Next.js portfolio starter project built in Firebase Studio. It's fully configured to connect to a Firebase backend for authentication and database, and it's ready to be deployed to **Vercel**.
 
 ## Getting Started: Local Setup
 
@@ -55,18 +55,30 @@ For security, your admin login credentials are **not** stored in the code. You c
 
 You can now use these credentials on the `/login` page of your application to access the admin dashboard.
 
-## Running Locally
+## Deploying to Vercel
 
-The application runs automatically in the preview window of Firebase Studio. Once you have configured your `.env.local` file, the preview will connect to your live Firebase project.
+This project is optimized for deployment on Vercel.
 
-## Preparing for Deployment
+### Step 1: Push to a Git Repository
+Push your project code to a GitHub, GitLab, or Bitbucket repository.
 
-Your application is ready to be deployed to Firebase App Hosting.
+### Step 2: Import Project to Vercel
+1.  Log in to your Vercel account.
+2.  Click on **"Add New... > Project"**.
+3.  Import the Git repository you just created.
+4.  Vercel will automatically detect that you are using Next.js and configure the build settings for you.
 
-**CRITICAL DEPLOYMENT STEP:** When you deploy, you must also add these same environment variables to your Firebase App Hosting backend configuration. This is done in the Firebase console settings for your App Hosting backend.
+### Step 3: Configure Environment Variables in Vercel
 
-1.  Go to the **App Hosting** section in your Firebase Console.
-2.  Find your backend and go to its settings.
-3.  Add each of the variables from your `.env.local` file as a secret.
+This is the most important step to connect your live site to Firebase.
 
-This ensures your live, deployed site can connect to Firebase, just like your local version.
+1.  In your new Vercel project dashboard, go to the **Settings** tab.
+2.  Click on **Environment Variables** in the left menu.
+3.  For each variable in your `.env.local` file, add it here.
+    *   **Copy the variable name** (e.g., `NEXT_PUBLIC_FIREBASE_API_KEY`).
+    *   **Copy the value** (e.g., `AIzaSy...`).
+    *   Click **Add**.
+4.  Repeat this for all the `NEXT_PUBLIC_` variables from your file.
+
+### Step 4: Deploy
+Go to the **Deployments** tab in Vercel and trigger a new deployment. Vercel will build and deploy your site. Once it's done, your portfolio will be live and connected to your Firebase database!
