@@ -82,3 +82,4 @@ This is the most important step to connect your live site to Firebase.
 
 ### Step 4: Deploy
 Go to the **Deployments** tab in Vercel and trigger a new deployment. Vercel will build and deploy your site. Once it's done, your portfolio will be live and connected to your Firebase database!
+######
